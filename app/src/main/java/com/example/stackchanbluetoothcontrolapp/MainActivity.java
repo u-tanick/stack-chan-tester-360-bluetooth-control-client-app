@@ -1,11 +1,10 @@
-package com.example.test_app;
+package com.example.stackchanbluetoothcontrolapp;
 
-//https://www.hiramine.com/programming/blecommunicator/index.html
+import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -27,10 +26,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 @RequiresApi(api = Build.VERSION_CODES.S)
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
     private final String TAG = "MainActivity";
 
     // 定数
@@ -42,13 +40,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button button_connect;
     private Button button_disconnect;
-    private Button button_send;
-    private Button button_clear;
-    TextView text_devicename;
-    private EditText text_tosend;
-    private TextView text_received;
+    TextView text_device_name;
+    private Button button_f_speed_low;
+    private Button button_f_speed_mid;
+    private Button button_f_speed_high;
+    private Button button_b_speed_low;
+    private Button button_b_speed_mid;
+    private Button button_b_speed_high;
+    private Button button_stop;
+    private TextView control_log;
+
+    private static final String F_HIGH = "0";
+    private static final String F_MID  = "30";
+    private static final String F_LOW  = "60";
+    private static final String STOP   = "90";
+    private static final String B_LOW  = "120";
+    private static final String B_MID  = "150";
+    private static final String B_HIGH = "180";
     private static final int REQUEST_MULTI_PERMISSIONS = 101;
 
+    //
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -58,25 +69,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
 
+    /**
+     * Activityの初期化処理
+     * 各ボタンやフィールド、BLE(Bluetooth Low Energy)などの設定
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         button_connect = findViewById(R.id.button_connect);
         button_connect.setOnClickListener(this);
         button_disconnect = findViewById(R.id.button_disconnect);
         button_disconnect.setOnClickListener(this);
+        text_device_name = findViewById(R.id.text_device_name);
+
+        button_f_speed_low = findViewById(R.id.f_speed_low);
+        button_f_speed_low.setOnClickListener(this);
+        button_f_speed_mid = findViewById(R.id.f_speed_mid);
+        button_f_speed_mid.setOnClickListener(this);
+        button_f_speed_high = findViewById(R.id.f_speed_high);
+        button_f_speed_high.setOnClickListener(this);
+
+        button_b_speed_low = findViewById(R.id.b_speed_low);
+        button_b_speed_low.setOnClickListener(this);
+        button_b_speed_mid = findViewById(R.id.b_speed_mid);
+        button_b_speed_mid.setOnClickListener(this);
+        button_b_speed_high = findViewById(R.id.b_speed_high);
+        button_b_speed_high.setOnClickListener(this);
+
+        button_stop = findViewById(R.id.stop);
+        button_stop.setOnClickListener(this);
+
+        /*
         button_send = findViewById(R.id.button_send);
         button_send.setOnClickListener(this);
         button_clear = findViewById(R.id.button_clear);
         button_clear.setOnClickListener(this);
-        text_devicename = findViewById(R.id.text_devicename);
         text_tosend = findViewById(R.id.text_tosend);
         text_tosend.addTextChangedListener(new MyTextWatcher());
-        text_received = findViewById(R.id.text_received);
-        text_received.setMovementMethod(new ScrollingMovementMethod());
+         */
+
+        control_log = findViewById(R.id.control_log);
+        control_log.setMovementMethod(new ScrollingMovementMethod());
+
         mBluetoothLEWork = new BluetoothLEWork(MainActivity.this) {
             @Override
             public void onBLEConectionFailed(String str) {
@@ -88,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onBLEConnected(String device) {
                 button_disconnect.setEnabled(true);
                 button_connect.setEnabled(false);
-                text_devicename.setText("Device: " + device);
+                text_device_name.setText("Device: " + device);
                 Toast.makeText(MainActivity.this, "Device: " + device + " Connected.", Toast.LENGTH_LONG).show();
             }
 
@@ -100,18 +138,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onBLEDisconnected() {
                 button_connect.setEnabled(true);
                 button_disconnect.setEnabled(false);
-                text_devicename.setText("no device");
+                text_device_name.setText("no device");
             }
 
             @Override
             public void onMessageReceived(String text) {
-                String tmp = text_received.getText().toString();
-                text_received.setText(tmp + text + "\n");
+                String tmp = control_log.getText().toString();
+                control_log.setText(tmp + text + "\n");
             }
 
             @Override
             public void onMessageWritten() {
-                button_send.setEnabled(true);
+                button_f_speed_low.setEnabled(true);
+                button_f_speed_mid.setEnabled(true);
+                button_f_speed_high.setEnabled(true);
+                button_b_speed_low.setEnabled(true);
+                button_b_speed_mid.setEnabled(true);
+                button_b_speed_high.setEnabled(true);
+                button_stop.setEnabled(true);
+                // button_send.setEnabled(true);
             }
         };
         if (!mBluetoothLEWork.checkBluetooth()) {
@@ -132,17 +177,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBluetoothLEWork.checkpermission();
     }
 
+    /**
+     * Androidのバージョン 12より前のBluetooth権限設定
+     */
     private static final String[] BLE_PERMISSIONS = new String[]{
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION,
     };
 
+    /**
+     * Androidのバージョン 12以上向けのBluetooth権限設定
+     */
     private static final String[] ANDROID_12_BLE_PERMISSIONS = new String[]{
             android.Manifest.permission.BLUETOOTH_SCAN,
             android.Manifest.permission.BLUETOOTH_CONNECT,
             //android.Manifest.permission.ACCESS_FINE_LOCATION,
     };
 
+    /**
+     * Androidのバージョン（12以上 or 12より前）によってBluetooth権限の処理を分岐
+     */
     public static void requestBlePermissions(Activity activity, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
             ActivityCompat.requestPermissions(activity, ANDROID_12_BLE_PERMISSIONS, requestCode);
@@ -150,7 +204,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(activity, BLE_PERMISSIONS, requestCode);
     }
 
-    // 初回表示時、および、ポーズからの復帰時
+
+    /**
+     * 初回表示時、および、ポーズからの復帰時
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -161,65 +218,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // 別のアクティビティ（か別のアプリ）に移行したことで、バックグラウンドに追いやられた時
+    /**
+     * 別のアクティビティ（か別のアプリ）に移行したことで、バックグラウンドに追いやられた時
+     */
     @Override
     protected void onPause() {
         super.onPause();
         mBluetoothLEWork.disconnect();
     }
 
-    // アクティビティの終了直前
+    /**
+     * アクティビティの終了直前
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mBluetoothLEWork.disconnect();
     }
 
+    /**
+     * 各ボタンが押された時の処理
+     * 各ボタンの識別子がsetOnClickListener(this)で渡されるので分岐処理
+     */
     @Override
     public void onClick(View v) {
-        if (v==button_connect) {    //ペアリング済のBTデバイスを選択して接続
+        if (v==button_connect) {                     //ペアリング済のBTデバイスを選択して接続
             button_connect.setEnabled( false );
             mBluetoothLEWork.selectandconnectDevice();
         } else if (v==button_disconnect) {            //BTデバイスを切断
             mBluetoothLEWork.disconnect();
-        } else if (v==button_send) {            //文字列送信
-            button_send.setEnabled(false);
-            //ソフトウエアキーボードを隠す
-            text_devicename.requestFocus();
-            imm.hideSoftInputFromWindow(text_tosend.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            String tmp = text_tosend.getText().toString();
-            String stringSend = tmp + "\r\n";  // 終端に改行コードを付加
-            mBluetoothLEWork.sendtext(stringSend);
-        } else if (v==button_clear) {  //文字列消去
-            text_devicename.requestFocus();
-            imm.hideSoftInputFromWindow(text_tosend.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            text_tosend.setText("");
-            text_received.setText("");
+        } else if (v==button_f_speed_low) {
+            button_f_speed_low.setEnabled(false);
+            mBluetoothLEWork.sendtext(F_LOW);
+            mBluetoothLEWork.onMessageReceived("forward speed low : " + F_LOW + " degree\n");
+        } else if (v==button_f_speed_mid) {
+            button_f_speed_mid.setEnabled(false);
+            mBluetoothLEWork.sendtext(F_MID);
+            mBluetoothLEWork.onMessageReceived("forward speed mid : " + F_MID + " degree\n");
+        } else if (v==button_f_speed_high) {
+            button_f_speed_high.setEnabled(false);
+            mBluetoothLEWork.sendtext(F_HIGH);
+            mBluetoothLEWork.onMessageReceived("forward speed high : " + F_HIGH + " degree\n");
+        } else if (v==button_b_speed_low) {
+            button_b_speed_low.setEnabled(false);
+            mBluetoothLEWork.sendtext(B_LOW);
+            mBluetoothLEWork.onMessageReceived("back speed low : " + B_LOW + " degree\n");
+        } else if (v==button_b_speed_mid) {
+            button_b_speed_mid.setEnabled(false);
+            mBluetoothLEWork.sendtext(B_MID);
+            mBluetoothLEWork.onMessageReceived("back speed mid : " + B_MID + " degree\n");
+        } else if (v==button_b_speed_high) {
+            button_b_speed_high.setEnabled(false);
+            mBluetoothLEWork.sendtext(B_HIGH);
+            mBluetoothLEWork.onMessageReceived("back speed high : " + B_HIGH + " degree\n");
+        } else if (v==button_stop) {
+            button_stop.setEnabled(false);
+            mBluetoothLEWork.sendtext("0");
+            mBluetoothLEWork.onMessageReceived("STOP speed : " + STOP + " degree\n");
         }
     }
-
-    private class MyTextWatcher implements TextWatcher {
-        @Override
-        public void afterTextChanged(Editable s) {
-            String input = s.toString();
-            //Log.i(TAG, "MyTextWatcher afterTextChanged >" + input);
-            if (input.contains("\n")) {
-                input = input.replace("\n", "");
-                text_tosend.setText(input);
-                text_devicename.requestFocus();
-                imm.hideSoftInputFromWindow(text_tosend.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                return;
-            }
-            button_send.setEnabled(true);
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-    }
-
 }

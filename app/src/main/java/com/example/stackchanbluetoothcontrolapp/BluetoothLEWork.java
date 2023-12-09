@@ -1,4 +1,4 @@
-package com.example.test_app;
+package com.example.stackchanbluetoothcontrolapp;
 
 import android.Manifest;
 import android.app.Activity;

@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "test-app"
-include(":app")
+rootProject.name = "StackchanBluetoothControlApp"
+include ':app'
