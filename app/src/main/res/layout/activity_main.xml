@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/imageView"
+        android:scaleType="centerInside"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +97,7 @@
         tools:layout_editor_absoluteY="190dp" />
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="242dp"
+        android:layout_height="252dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="204dp"
         tools:ignore="MissingConstraints">
@@ -204,6 +206,7 @@
                 android:text="Stop" />
         </TableRow>
     </TableLayout>
+
     <View
         android:id="@+id/divider3"
         android:layout_width="match_parent"
@@ -212,7 +215,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="450dp" />
+        tools:layout_editor_absoluteY="460dp" />
+
     <TextView
         android:id="@+id/control_log"
         android:layout_width="match_parent"
@@ -221,7 +225,7 @@
         android:scrollbars="vertical"
         android:text="Control Log\n"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="466dp"
+        tools:layout_editor_absoluteY="476dp"
         tools:ignore="MissingConstraints" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

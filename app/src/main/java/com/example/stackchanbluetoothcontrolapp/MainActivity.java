@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +78,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // ImaveViewに設定した画像を読み込む処理
+        ImageView myimage = findViewById(R.id.imageView);
+        myimage.setImageResource(R.drawable.stk);
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
