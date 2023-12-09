@@ -22,11 +22,6 @@ Android Studio Giraffe | 2022.3.1 Patch 3　で作成。
 
 [AndroidStudioでAPKファイルを作成する方法。Debug版とRelease版の作成【AndroidStudio】](https://nosystemnolife.com/androidapk/)
 
-## apk
-
-デバッグ用のapkをビルドしたファイル "app-debug.apk" を[app/build/outputs/apk/debug](../app/build/outputs/apk/debug)に格納済み。
-
-
 ## 使い方（Bluetooth接続 (※)）
 
 1. Androidスマホに、別途公開している、[Bluetooth接続用クライアントアプリ](https://github.com/u-tanick/stack-chan-tester-360-bluetooth-control-client-app) をインストール。
@@ -38,7 +33,11 @@ Android Studio Giraffe | 2022.3.1 Patch 3　で作成。
 
 ※ Bluetooth接続には、BLE(Bluetooth Low Energy)を利用しています。
 
-## 免責事項
+## apk
+
+デバッグ用のapkのサンプルを [apkフォルダの中]([../app/build/outputs/apk/debug](https://github.com/u-tanick/stack-chan-tester-360-bluetooth-control-client-app/tree/main/apk)) に格納しています。
+
+### 免責事項
 
 - 自作apkとなるため、「提供元不明のアプリ」のインストール許可が必要となります。
 - ESETを入れたスマホでセキュリティチェック済みですが、インストールの際に発生する責任は負いかねます。ご了承ください。
