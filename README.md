@@ -25,8 +25,8 @@ Android Studio Giraffe | 2022.3.1 Patch 3　で作成。
 
 ## 使い方（Bluetooth接続 (※)）
 
-1. Androidスマホに、別途公開している、[Bluetooth接続用クライアントアプリ](https://github.com/u-tanick/stack-chan-tester-360-bluetooth-control-client-app) をインストール。
-  - リポジトリにapkファイルも格納しています。
+1. Androidスマホに、本リポジトリをビルドし作成したアプリをインストール。
+  - 本リポジトリのapkフォルダに、ビルドサンプルも格納しています。（下記参照）
 2. 本リポジトリのビルド結果をインストールしたM5Stackを起動。
 3. M5StackとスマホをBluetoothで接続。
 4. スマホアプリを起動し、[connect]ボタンを押し、アプリとの接続を確立。
@@ -36,7 +36,7 @@ Android Studio Giraffe | 2022.3.1 Patch 3　で作成。
 
 ※ Bluetooth接続には、BLE(Bluetooth Low Energy)を利用しています。
 
-## apk
+## apk（ビルドサンプル）
 
 デバッグ用のapkのサンプルを [apkフォルダの中]([../app/build/outputs/apk/debug](https://github.com/u-tanick/stack-chan-tester-360-bluetooth-control-client-app/tree/main/apk)) に格納しています。
 
