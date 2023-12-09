@@ -131,8 +131,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onBLEConnected(String device) {
                 button_disconnect.setEnabled(true);
                 button_connect.setEnabled(false);
-                text_device_name.setText("Device: " + device);
-                Toast.makeText(MainActivity.this, "Device: " + device + " Connected.", Toast.LENGTH_LONG).show();
+                text_device_name.setText(device);
+                String text = "Device: " + device + " Connected.";
+                Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
+                onMessageReceived(text);
             }
 
             @Override
@@ -144,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button_connect.setEnabled(true);
                 button_disconnect.setEnabled(false);
                 text_device_name.setText("no device");
+                control_log.setText("");
             }
 
             @Override
@@ -248,38 +251,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v==button_connect) {                     //ペアリング済のBTデバイスを選択して接続
-            button_connect.setEnabled( false );
+            button_connect.setEnabled(false);
             mBluetoothLEWork.selectandconnectDevice();
         } else if (v==button_disconnect) {            //BTデバイスを切断
             mBluetoothLEWork.disconnect();
         } else if (v==button_f_speed_low) {
             button_f_speed_low.setEnabled(false);
             mBluetoothLEWork.sendtext(F_LOW);
-            mBluetoothLEWork.onMessageReceived("forward speed low : " + F_LOW + " degree\n");
+            mBluetoothLEWork.onMessageReceived("FORWARD : Speed LOW  : " + F_LOW + " degree");
+            button_f_speed_low.setEnabled(true);
         } else if (v==button_f_speed_mid) {
             button_f_speed_mid.setEnabled(false);
             mBluetoothLEWork.sendtext(F_MID);
-            mBluetoothLEWork.onMessageReceived("forward speed mid : " + F_MID + " degree\n");
+            mBluetoothLEWork.onMessageReceived("FORWARD : Speed MID   : " + F_MID + " degree");
+            button_f_speed_low.setEnabled(true);
         } else if (v==button_f_speed_high) {
             button_f_speed_high.setEnabled(false);
             mBluetoothLEWork.sendtext(F_HIGH);
-            mBluetoothLEWork.onMessageReceived("forward speed high : " + F_HIGH + " degree\n");
+            mBluetoothLEWork.onMessageReceived("FORWARD : Speed HIGH : " + F_HIGH + " degree");
+            button_f_speed_low.setEnabled(true);
         } else if (v==button_b_speed_low) {
             button_b_speed_low.setEnabled(false);
             mBluetoothLEWork.sendtext(B_LOW);
-            mBluetoothLEWork.onMessageReceived("back speed low : " + B_LOW + " degree\n");
+            mBluetoothLEWork.onMessageReceived("BACK         : Speed LOW  : " + B_LOW + " degree");
+            button_f_speed_low.setEnabled(true);
         } else if (v==button_b_speed_mid) {
             button_b_speed_mid.setEnabled(false);
             mBluetoothLEWork.sendtext(B_MID);
-            mBluetoothLEWork.onMessageReceived("back speed mid : " + B_MID + " degree\n");
+            mBluetoothLEWork.onMessageReceived("BACK         : Speed MID   : " + B_MID + " degree");
+            button_f_speed_low.setEnabled(true);
         } else if (v==button_b_speed_high) {
             button_b_speed_high.setEnabled(false);
             mBluetoothLEWork.sendtext(B_HIGH);
-            mBluetoothLEWork.onMessageReceived("back speed high : " + B_HIGH + " degree\n");
+            mBluetoothLEWork.onMessageReceived("BACK         : Speed HIGH : " + B_HIGH + " degree");
+            button_f_speed_low.setEnabled(true);
         } else if (v==button_stop) {
             button_stop.setEnabled(false);
-            mBluetoothLEWork.sendtext("0");
-            mBluetoothLEWork.onMessageReceived("STOP speed : " + STOP + " degree\n");
+            mBluetoothLEWork.sendtext(STOP);
+            mBluetoothLEWork.onMessageReceived("STOP         : Speed ZERO : " + STOP + " degree");
+            button_f_speed_low.setEnabled(true);
         }
     }
 }

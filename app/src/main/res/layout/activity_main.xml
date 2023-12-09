@@ -53,6 +53,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/text_device_name"
+                android:layout_width="match_parent"
+                android:layout_height="26dp"
+                android:layout_marginLeft="30dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="no device" />
+
             <Button
                 android:id="@+id/button_connect"
                 android:layout_width="wrap_content"
@@ -74,15 +83,6 @@
                 android:layout_marginRight="10dp"
                 android:enabled="false"
                 android:text="Disconnect" />
-
-            <TextView
-                android:id="@+id/text_device_name"
-                android:layout_width="match_parent"
-                android:layout_height="26dp"
-                android:layout_marginLeft="30dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:text="no device" />
 
         </TableRow>
     </TableLayout>
@@ -217,15 +217,28 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="460dp" />
 
-    <TextView
-        android:id="@+id/control_log"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginLeft="10dp"
-        android:scrollbars="vertical"
-        android:text="Control Log\n"
+        android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="476dp"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteY="476dp" >
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="false" >
+
+            <TextView
+                android:id="@+id/control_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </LinearLayout>
