@@ -14,7 +14,7 @@ Android Studio Giraffe | 2022.3.1 Patch 3　で作成。
 
 ## 画面
 
-![スクショ](hoge.png)
+![初期画面](img/bc001.png)
 
 ## ビルド手順
 
@@ -29,7 +29,9 @@ Android Studio Giraffe | 2022.3.1 Patch 3　で作成。
 2. 本リポジトリのビルド結果をインストールしたM5Stackを起動。
 3. M5StackとスマホをBluetoothで接続。
 4. スマホアプリを起動し、[connect]ボタンを押し、アプリとの接続を確立。
+![アプリとM5Stackを接続：M5Stackを選択](img/bc002.png)
 5. アプリにある各種ボタンを操作して、サーボモーターを動作させる。
+![前進／後退／停止が可能](img/bc003.png)
 
 ※ Bluetooth接続には、BLE(Bluetooth Low Energy)を利用しています。
 
