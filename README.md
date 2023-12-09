@@ -1,6 +1,6 @@
 # stack-chan-tester-360-bluetooth-control-client-app
 
-[BLEでM5Stackと通信](https://coskxlabsite.stars.ne.jp/html/android/BluetoothLE/bluetoothLE.html)で公開いただいているソースコードを元に、
+[BLEでM5Stackと通信（Coskx Lab／小坂敏文さん）](https://coskxlabsite.stars.ne.jp/html/android/BluetoothLE/bluetoothLE.html) から公開いただいているソースコードを元に、
 [stack-chan-tester-360-bluetooth-control](https://github.com/u-tanick/stack-chan-tester-360-bluetooth-control)を制御するために作成したクライアントアプリ。
 
 Android Studio Giraffe | 2022.3.1 Patch 3　で作成。
